@@ -24,19 +24,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gabrielmbmb/vuex-multi-tab-state.git"
+    "url": "git+https://github.com/gosyl/vuex-multi-tab-state.git"
   },
   "keywords": [
     "vue",
     "vuex",
     "plugin"
   ],
-  "author": "Gabriel Martin Blazquez <gmartinbdev@gmail.com>",
+  "author": "Alexandre Lippmann <alexandre.lippmann@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gabrielmbmb/vuex-multi-tab-state/issues"
+    "url": "https://github.com/gosyl/vuex-multi-tab-state/issues"
   },
-  "homepage": "https://github.com/gabrielmbmb/vuex-multi-tab-state#readme",
+  "homepage": "https://github.com/gosyl/vuex-multi-tab-state#readme",
   "devDependencies": {
     "@types/chai": "^4.2.9",
     "@types/chai-spies": "^1.0.1",
