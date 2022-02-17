@@ -15,41 +15,55 @@ export default class Tab {
     this.window = window;
   }
 
-  storageAvailable(): Boolean {
+  storageAvailable(storageType: 'localStorage' | 'sessionStorage'): Boolean {
     const test = 'vuex-multi-tab-state-test';
     try {
-      this.window.localStorage.setItem(test, test);
-      this.window.localStorage.removeItem(test);
+      this.window[storageType].setItem(test, test);
+      this.window[storageType].removeItem(test);
       return true;
     } catch (e) {
       return false;
     }
   }
 
-  saveState(key: string, state: object) {
+  saveState(
+    key: string,
+    state: object,
+    storageType: 'localStorage' | 'sessionStorage'
+  ) {
     const toSave = JSON.stringify({
       id: this.tabId,
       state,
     });
 
     // Save the state in local storage
-    this.window.localStorage.setItem(key, toSave);
+    this.window[storageType].setItem(key, toSave);
   }
 
-  fetchState(key: string, cb: Function) {
-    const value = this.window.localStorage.getItem(key);
+  fetchState(
+    key: string,
+    storageType: 'localStorage' | 'sessionStorage',
+    cb: Function
+  ) {
+    const value = this.window[storageType].getItem(key);
 
     if (value) {
       try {
         const parsed = JSON.parse(value);
         cb(parsed.state);
       } catch (e) {
-        console.warn(`State saved in localStorage with key ${key} is invalid!`);
+        console.warn(
+          `State saved in ${storageType} with key ${key} is invalid!`
+        );
       }
     }
   }
 
-  addEventListener(key: string, cb: Function) {
+  addEventListener(
+    key: string,
+    storageType: 'localStorage' | 'sessionStorage',
+    cb: Function
+  ) {
     return this.window.addEventListener('storage', (event: StorageEvent) => {
       if (!event.newValue || event.key !== key) {
         return;
@@ -64,7 +78,7 @@ export default class Tab {
         }
       } catch (e) {
         console.warn(
-          `New state saved in localStorage with key ${key} is invalid`
+          `New state saved in ${storageType} with key ${key} is invalid`
         );
       }
     });

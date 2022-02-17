@@ -125,6 +125,8 @@ be sync. Defaults to `[]`.
 
 - `key? <String>`: key of the local storage in which the state will be stored.
 Defaults to `'vuex-multi-tab'`.
+- `storageType <String>`: `'sessionStorage'` or `'localStorage'`.
+Defaults to `'localStorage'`
 - `onBeforeReplace? <Function>`: hook function that receives the state and allows to modify it before replacing it. The function can return either a modified state or a `falsy` value (which means that no modifications has been done inside the hook).
 - `onBeforeSave? <Function>`: hook function that receives the state and allows to modify it before saving it in local storage. The function can return either a modified state or a `falsy` value (which means that no modifications has been done inside the hook).
 
@@ -137,6 +139,7 @@ Defaults to `'vuex-multi-tab'`.
       },
     },
     plugins: [createMultiTabState({
+      storageType: 'sessionStorage',
       statesPaths: ['fruits.oranges'],
       onBeforeSave: (state) => {
         // Modify state here

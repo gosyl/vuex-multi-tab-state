@@ -6,6 +6,7 @@ export interface Options {
   key?: string;
   onBeforeReplace?(state: any): any;
   onBeforeSave?(state: any): any;
+  storageType?: 'sessionStorage' | 'localStorage';
 }
 
 export default function(options?: Options) {
@@ -14,12 +15,14 @@ export default function(options?: Options) {
   let statesPaths: string[] = [];
   let onBeforeReplace = (state: any) => state;
   let onBeforeSave = (state: any) => state;
+  let storageType: 'localStorage' | 'sessionStorage' = 'localStorage';
 
   if (options) {
     key = options.key ? options.key : key;
     statesPaths = options.statesPaths ? options.statesPaths : statesPaths;
     onBeforeReplace = options.onBeforeReplace || onBeforeReplace;
     onBeforeSave = options.onBeforeSave || onBeforeSave;
+    storageType = options.storageType || storageType;
   }
 
   function filterStates(state: { [key: string]: any }): { [key: string]: any } {
@@ -64,7 +67,7 @@ export default function(options?: Options) {
     return merged;
   }
 
-  if (!tab.storageAvailable()) {
+  if (!tab.storageAvailable(storageType)) {
     throw new Error('Local storage is not available!');
   }
 
@@ -78,12 +81,12 @@ export default function(options?: Options) {
 
   return (store: any) => {
     // First time, fetch state from local storage
-    tab.fetchState(key, (state: object) => {
+    tab.fetchState(key, storageType, (state: object) => {
       replaceState(store, state);
     });
 
     // Add event listener to the state saved in local storage
-    tab.addEventListener(key, (state: object) => {
+    tab.addEventListener(key, storageType, (state: object) => {
       replaceState(store, state);
     });
 
@@ -99,7 +102,7 @@ export default function(options?: Options) {
 
       // Save state in local storage
       if (toSave) {
-        tab.saveState(key, toSave);
+        tab.saveState(key, toSave, storageType);
       }
     });
   };
